@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/home_dest">
+
+    <fragment
+            android:id="@+id/home_dest"
+            android:name="com.example.shopper.HomeFragment"
+            android:label="@string/app_name"
+            tools:layout="@layout/fragment_home">
+        <action android:id="@+id/action_home_dest_to_profile_dest"
+                app:destination="@id/profile_dest"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/profile_dest"
+            android:name="com.example.shopper.ProfileFragment"
+            android:label="@string/profile"
+            tools:layout="@layout/fragment_profile"/>
+
+    <fragment
+            android:id="@+id/login_dest"
+            android:name="com.example.shopper.LoginFragment"
+            android:label="@string/login"
+            tools:layout="@layout/fragment_login">
+        <action android:id="@+id/action_login_dest_to_register_dest"
+                app:destination="@id/register_dest"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment android:id="@+id/register_dest"
+              android:name="com.example.shopper.RegisterFragment"
+              android:label="@string/register"/>
+
+</navigation>

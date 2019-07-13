@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="photo">
+        <item>Choose photo from memory</item>
+        <item>Take Photo</item>
+    </string-array>
+</resources>
