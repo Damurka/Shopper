@@ -12,7 +12,7 @@ import com.example.shopper.databinding.ListItemShoppingBinding
 import com.example.shopper.models.ShoppingList
 import com.example.shopper.viewmodels.ShoppingListItemViewModel
 
-class ShoppingListAdapter : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHolder>(ShoppingListDiffCallback()) {
+class ShoppingListAdapter() : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHolder>(ShoppingListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListItemShoppingBinding.inflate(
@@ -25,7 +25,7 @@ class ShoppingListAdapter : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHo
         getItem(position).let { recipe ->
             with(holder) {
                 itemView.tag = recipe
-                bind(createOnClickListener(), recipe)
+                bind(createOnClickListener(position), recipe)
             }
         }
     }
@@ -34,9 +34,10 @@ class ShoppingListAdapter : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHo
         return getItem(position)
     }
 
-    private fun createOnClickListener(): View.OnClickListener {
+    private fun createOnClickListener(position: Int): View.OnClickListener {
         return View.OnClickListener {
-            val direction = ShopperFragmentDirections.actionShoppingDestToShoppingDetailsDest()
+            val item = getItem(position)
+            val direction = ShopperFragmentDirections.actionShoppingDestToShoppingDetailsDest(item.key)
             it.findNavController().navigate(direction)
         }
     }

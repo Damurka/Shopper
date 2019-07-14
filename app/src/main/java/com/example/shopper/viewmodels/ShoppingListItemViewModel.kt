@@ -8,5 +8,6 @@ class ShoppingListItemViewModel(shoppingList: ShoppingList): ViewModel() {
 
     val name = ObservableField(shoppingList.name)
     val owner = ObservableField(shoppingList.owner)
+    val isCreator = ObservableField(true)
 
 }

@@ -33,7 +33,7 @@ class ProfileFragment : AuthenticatedFragment() {
     private lateinit var binding: FragmentProfileBinding
 
     private val profileViewModel: ProfileViewModel by viewModels {
-        ProfileViewModelFactory(authViewModel.userId)
+        ProfileViewModelFactory(authViewModel.userId!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

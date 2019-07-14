@@ -3,6 +3,7 @@ package com.example.shopper.helpers
 import android.util.Log
 import androidx.arch.core.util.Function
 import com.example.shopper.models.Profile
+import com.example.shopper.models.ShoppingItem
 import com.example.shopper.models.ShoppingList
 import com.google.firebase.database.DataSnapshot
 
@@ -26,6 +27,27 @@ class ShoppingListDeserializer : Function<DataSnapshot, List<ShoppingList>> {
             }
 
             val shop = data.getValue(ShoppingList::class.java) as ShoppingList
+            Log.i("Deserializer", shop.name)
+            shopping.add(shop)
+        }
+
+        return shopping
+    }
+
+}
+
+class ShoppingDetailDeserializer : Function<DataSnapshot, List<ShoppingItem>> {
+    override fun apply(input: DataSnapshot?): List<ShoppingItem> {
+        val shopping = mutableListOf<ShoppingItem>()
+
+        for (data in input!!.children) {
+            //Log.i("Deserializer", data.)
+            Log.i("Deserializer", data.value.toString())
+            if (data.value is String) {
+                break
+            }
+
+            val shop = data.getValue(ShoppingItem::class.java) as ShoppingItem
             Log.i("Deserializer", shop.name)
             shopping.add(shop)
         }

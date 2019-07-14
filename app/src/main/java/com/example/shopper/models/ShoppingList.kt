@@ -7,7 +7,9 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class ShoppingList(
     var key: String = "",
     val name: String = "",
-    val owner: String = ""
+    val owner: String = "",
+    val created: String = "",
+    val modified: String = ""
 ) {
     @Exclude
     fun toMap(): Map<String, Any?> {

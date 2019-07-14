@@ -3,9 +3,6 @@ package com.example.shopper
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -20,9 +17,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.shopper.adapters.ShoppingListAdapter
 import com.example.shopper.databinding.FragmentShopperBinding
+import com.example.shopper.helpers.ShopperSwipeToDeleteCallback
+import com.example.shopper.helpers.capitalizeWords
 import com.example.shopper.models.ShoppingList
 import com.example.shopper.viewmodels.*
 
@@ -48,7 +46,13 @@ class ShopperFragment : Fragment() {
 
         val adapter = ShoppingListAdapter()
         binding.shoppingList.adapter = adapter
-        val touchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter))
+
+        val callback = ShopperSwipeToDeleteCallback {
+            val item = adapter.getShoppingList(it)
+            shoppingViewModel.deleteShoppingList(item.key)
+        }
+
+        val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(binding.shoppingList)
 
         binding.fab.setOnTouchListener { _, event ->
@@ -80,10 +84,10 @@ class ShopperFragment : Fragment() {
         voiceVoiceModel.recognizedLiveData.observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrBlank()) {
                 Toast.makeText(requireContext(), "You said: $it", Toast.LENGTH_LONG).show()
-                val list = ShoppingList(name = it, owner = authViewModel.email)
+                val list = ShoppingList(name = it.capitalizeWords(), owner = authViewModel.email)
                 shoppingViewModel.addShoppingList(list)
             } else {
-                Toast.makeText(requireContext(), "Error: $it", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Error: Please say that again", Toast.LENGTH_LONG).show()
             }
         })
 
@@ -122,51 +126,5 @@ class ShopperFragment : Fragment() {
 
         private val permissions = arrayOf(
             Manifest.permission.RECORD_AUDIO)
-    }
-
-    private inner class SwipeToDeleteCallback(private val adapter: ShoppingListAdapter)
-        : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT){
-
-        private val icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)
-        private val background = ColorDrawable(Color.RED)
-
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            return false
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val item = adapter.getShoppingList(viewHolder.adapterPosition)
-            shoppingViewModel.deleteShoppingList(item.key)
-        }
-
-        override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            val view = viewHolder.itemView
-            val backgroundOffset = 20
-            val iconMargin = (view.height - icon!!.intrinsicHeight) / 2
-            val iconTop = view.top + (view.height - icon.intrinsicHeight) / 2
-            val iconBottom = iconTop + icon.intrinsicHeight
-
-            when {
-                dX > 0 -> {// Swiping to the right
-                    val iconLeft = view.left + iconMargin + icon.intrinsicWidth
-                    val iconRight = view.left + iconMargin
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                    background.setBounds(view.left, view.top, view.left + dX.toInt() + backgroundOffset, view.bottom)
-                }
-                dX < 0 -> {// Swiping to the Left
-                    val iconLeft = view.right - iconMargin - icon.intrinsicWidth
-                    val iconRight = view.right - iconMargin
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                    background.setBounds(view.right + dX.toInt() - backgroundOffset, view.top, view.right, view.bottom)
-                }
-                else -> // View is unswiped
-                    background.setBounds(0, 0, 0, 0)
-            }
-
-            background.draw(c)
-            icon.draw(c)
-        }
-
     }
 }

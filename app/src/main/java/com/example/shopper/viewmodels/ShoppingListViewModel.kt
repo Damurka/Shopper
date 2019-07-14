@@ -10,7 +10,7 @@ import com.example.shopper.models.ShoppingList
 import com.google.firebase.database.FirebaseDatabase
 
 
-class ShoppingListViewModel(userId: String) : ViewModel() {
+class ShoppingListViewModel(private val userId: String) : ViewModel() {
 
     private val database = FirebaseDatabase.getInstance().reference
 
@@ -25,6 +25,10 @@ class ShoppingListViewModel(userId: String) : ViewModel() {
     }
 
     fun deleteShoppingList(key: String) {
-        shoppingDatabaseReference.child(key).removeValue()
+        val childUpdates = HashMap<String, Any?>()
+        childUpdates["/${Constants.FirebaseShoppingLists}/$userId/$key"] = null
+        childUpdates["/${Constants.FirebaseShoppingItems}/$key"] = null
+
+        database.updateChildren(childUpdates)
     }
 }

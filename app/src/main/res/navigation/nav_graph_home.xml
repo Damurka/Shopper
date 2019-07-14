@@ -2,18 +2,31 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph_home"
-            app:startDestination="@id/shopping_dest">
+            app:startDestination="@id/history_dest">
 
-    <fragment android:id="@+id/shopping_dest" android:name="com.example.shopper.ShopperFragment"
-              android:label="fragment_shopping" tools:layout="@layout/fragment_shopper">
+    <fragment
+            android:id="@+id/shopping_dest"
+            android:name="com.example.shopper.ShopperFragment"
+            android:label="fragment_shopping"
+            tools:layout="@layout/fragment_shopper">
         <action android:id="@+id/action_shopping_dest_to_shopping_details_dest"
-                app:destination="@id/shopping_details_dest"/>
-        <argument android:name="item" app:argType="string"/>
+                app:destination="@id/shopping_details_dest" />
     </fragment>
-    <fragment android:id="@+id/history_dest" android:name="com.example.shopper.HistoryFragment"
-              android:label="fragment_history" tools:layout="@layout/fragment_history"/>
-    <fragment android:id="@+id/category_dest" android:name="com.example.shopper.CategoryFragment"
-              android:label="fragment_category" tools:layout="@layout/fragment_category"/>
-    <fragment android:id="@+id/shopping_details_dest" android:name="com.example.shopper.ShoppingDetailsFragment"
-              android:label="fragment_shopping_details" tools:layout="@layout/fragment_shopping_details"/>
+    <fragment
+            android:id="@+id/history_dest"
+            android:name="com.example.shopper.HistoryFragment"
+            android:label="fragment_history"
+            tools:layout="@layout/fragment_history"/>
+    <fragment
+            android:id="@+id/category_dest"
+            android:name="com.example.shopper.CategoryFragment"
+            android:label="fragment_category"
+            tools:layout="@layout/fragment_category"/>
+    <fragment
+            android:id="@+id/shopping_details_dest"
+            android:name="com.example.shopper.ShoppingDetailsFragment"
+            android:label="fragment_shopping_details"
+            tools:layout="@layout/fragment_shopping_details">
+        <argument android:name="listId" app:argType="string"/>
+    </fragment>
 </navigation>

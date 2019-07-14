@@ -20,7 +20,7 @@ open class AuthenticatedFragment : Fragment() {
         authViewModel.authenticationState.observe(viewLifecycleOwner, Observer {
             when (it) {
                 AuthViewModel.AuthenticationState.AUTHENTICATED -> {
-
+                    onAuthenticated()
                 }
                 else -> {
                     navController.navigate(R.id.login_dest)
@@ -28,4 +28,6 @@ open class AuthenticatedFragment : Fragment() {
             }
         })
     }
+
+    protected open fun onAuthenticated() {}
 }
