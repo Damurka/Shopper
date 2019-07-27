@@ -3,16 +3,15 @@ package com.example.shopper.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shopper.ShopperFragmentDirections
 import com.example.shopper.databinding.ListItemShoppingBinding
 import com.example.shopper.models.ShoppingList
 import com.example.shopper.viewmodels.ShoppingListItemViewModel
 
-class ShoppingListAdapter() : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHolder>(ShoppingListDiffCallback()) {
+
+class ShoppingListAdapter(private val userId: String, private val listener: (String) -> Unit) : ListAdapter<ShoppingList, ShoppingListAdapter.ViewHolder>(ShoppingListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListItemShoppingBinding.inflate(
@@ -22,10 +21,10 @@ class ShoppingListAdapter() : ListAdapter<ShoppingList, ShoppingListAdapter.View
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position).let { recipe ->
+        getItem(position).let { shoppingList ->
             with(holder) {
-                itemView.tag = recipe
-                bind(createOnClickListener(position), recipe)
+                itemView.tag = shoppingList
+                bind(createOnClickListener(position), shoppingList, userId)
             }
         }
     }
@@ -37,17 +36,16 @@ class ShoppingListAdapter() : ListAdapter<ShoppingList, ShoppingListAdapter.View
     private fun createOnClickListener(position: Int): View.OnClickListener {
         return View.OnClickListener {
             val item = getItem(position)
-            val direction = ShopperFragmentDirections.actionShoppingDestToShoppingDetailsDest(item.key)
-            it.findNavController().navigate(direction)
+            listener(item.key!!)
         }
     }
 
     class ViewHolder(private val binding: ListItemShoppingBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listener: View.OnClickListener, shoppingList: ShoppingList) {
+        fun bind(listener: View.OnClickListener, shoppingList: ShoppingList, userId: String) {
             with(binding) {
                 clickListener = listener
-                viewModel = ShoppingListItemViewModel(shoppingList)
+                viewModel = ShoppingListItemViewModel(shoppingList, userId)
                 executePendingBindings()
             }
         }

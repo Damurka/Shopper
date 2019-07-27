@@ -11,6 +11,9 @@ data class Profile(
     var imageUrl: String? = "") {
 
     @Exclude
+    var key: String? = null
+
+    @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "email" to email,

@@ -12,7 +12,7 @@ import com.example.shopper.models.ShoppingItem
 import com.example.shopper.viewmodels.ShoppingDetailsItemViewModel
 
 
-class ShoppingDetailAdapter: ListAdapter<ShoppingItem, ViewHolder>(ShoppingItemDiffCallback()) {
+class ShoppingDetailAdapter(private val listener: (ShoppingItem) -> Unit): ListAdapter<ShoppingItem, ViewHolder>(ShoppingItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListItemShoppingItemBinding.inflate(
@@ -38,6 +38,7 @@ class ShoppingDetailAdapter: ListAdapter<ShoppingItem, ViewHolder>(ShoppingItemD
     private fun createOnClickListener(position: Int): View.OnClickListener {
         return View.OnClickListener {
             val item = getItem(position)
+            listener(item)
         }
     }
 
@@ -46,6 +47,7 @@ class ShoppingDetailAdapter: ListAdapter<ShoppingItem, ViewHolder>(ShoppingItemD
         fun bind(listener: View.OnClickListener, shoppingItem: ShoppingItem) {
             with(binding) {
                 viewModel = ShoppingDetailsItemViewModel(shoppingItem)
+                clickListener = listener
                 executePendingBindings()
             }
         }

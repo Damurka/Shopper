@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.example.shopper.viewmodels.ShoppingListItemViewModel"/>
+                type="com.example.shopper.viewmodels.NotificationItemViewModel"/>
 
         <variable
                 name="clickListener"
@@ -16,42 +16,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:onClick="@{clickListener}">
+            android:padding="8dp">
 
         <TextView
                 android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.name}"
+                android:text="@{viewModel.title}"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="18sp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-                android:id="@+id/created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/created_by"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                app:layout_constraintTop_toBottomOf="@+id/name"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-                android:id="@+id/owner"
+                android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="2dp"
-                android:text='@{viewModel.isCreator() ? "You" : viewModel.owner}'
+                android:layout_marginEnd="8dp"
+                android:text="@{viewModel.message}"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/name"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/created"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

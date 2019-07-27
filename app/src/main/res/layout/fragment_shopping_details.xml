@@ -3,17 +3,54 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable name="isShopping" type="Boolean"/>
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".RecipeFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/shopping_list"
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/list_item_shopping"/>
+                android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/notify"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    app:isGone="@{!isShopping}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+                <TextView
+                        app:isGone="@{!isShopping}"
+                        android:id="@+id/shopping"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="16sp"
+                        android:text="You are shopping"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="16dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/shopping_list"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notify"
+                    tools:listitem="@layout/list_item_shopping"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
@@ -21,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_gravity="bottom|end"
+                app:isGone="@{isShopping}"
                 app:srcCompat="@drawable/ic_keyboard_voice" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

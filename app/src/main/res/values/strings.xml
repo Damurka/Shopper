@@ -20,4 +20,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
     <string name="created_by">Created by</string>
+    <string name="action_share">Share</string>
+    <string name="recipe">Recipes</string>
+    <string name="default_notification_channel_id">com.example.shopper-Shopper</string>
+    <string name="notifications">Notifications</string>
+    <string name="action_shop">Start Shopping</string>
 </resources>

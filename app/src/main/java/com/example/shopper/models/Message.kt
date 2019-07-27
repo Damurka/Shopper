@@ -3,11 +3,11 @@ package com.example.shopper.models
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
+
 @IgnoreExtraProperties
-data class ShoppingList(
-    val name: String = "",
-    val owner: String = "",
-    val userId: String = ""
+data class Message (
+    val title: String = "",
+    val message: String = ""
 ) {
 
     @Exclude
@@ -16,9 +16,8 @@ data class ShoppingList(
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
-            "name" to name,
-            "owner" to owner,
-            "userId" to userId
+            "title" to title,
+            "message" to message
         )
     }
 }

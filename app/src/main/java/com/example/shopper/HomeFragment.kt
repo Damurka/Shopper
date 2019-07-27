@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.shopper.databinding.FragmentHomeBinding
+import com.example.shopper.helpers.NotificationHelper
+import com.example.shopper.viewmodels.NotificationViewModel
+import com.example.shopper.viewmodels.NotificationViewModelFactory
 
 
 class HomeFragment : AuthenticatedFragment() {
 
+    private val notificationViewModel: NotificationViewModel by viewModels {
+        NotificationViewModelFactory(requireContext(), authViewModel.userId)
+    }
     private lateinit var childNavController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,7 +62,8 @@ class HomeFragment : AuthenticatedFragment() {
                 true
             }
             R.id.action_profile -> {
-                navController.navigate(R.id.action_home_dest_to_profile_dest)
+                // navController.navigate(R.id.action_home_dest_to_profile_dest)
+                NotificationHelper.createNotification(requireContext(), "Trial Notification", "This is a test Notification", true)
                 true
             }
             R.id.action_logout -> {
