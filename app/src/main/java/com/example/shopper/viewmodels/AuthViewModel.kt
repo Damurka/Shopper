@@ -29,7 +29,7 @@ class AuthViewModel : ViewModel() {
 
     val authenticationState = MutableLiveData<AuthenticationState>()
 
-    val userId: String get() = auth.currentUser!!.uid
+    val userId: String get() = auth.currentUser?.uid!!
 
     val email: String get() = auth.currentUser!!.email as String
 

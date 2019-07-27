@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph_home"
-            app:startDestination="@id/history_dest">
+            app:startDestination="@id/category_dest">
 
     <fragment
             android:id="@+id/shopping_dest"
@@ -16,7 +16,9 @@
             android:id="@+id/history_dest"
             android:name="com.example.shopper.HistoryFragment"
             android:label="fragment_history"
-            tools:layout="@layout/fragment_history"/>
+            tools:layout="@layout/fragment_history">
+        <action android:id="@+id/action_history_dest_to_history_detail_dest" app:destination="@id/history_detail_dest"/>
+    </fragment>
     <fragment
             android:id="@+id/category_dest"
             android:name="com.example.shopper.CategoryFragment"
@@ -27,6 +29,39 @@
             android:name="com.example.shopper.ShoppingDetailsFragment"
             android:label="fragment_shopping_details"
             tools:layout="@layout/fragment_shopping_details">
+        <argument
+                android:name="listId"
+                app:argType="string" />
+
+        <action
+                android:id="@+id/action_shopping_details_dest_to_share_dest"
+                app:destination="@id/share_dest" />
+
+    </fragment>
+    <fragment
+            android:id="@+id/share_dest"
+            android:name="com.example.shopper.ShareFragment"
+            android:label="fragment_share"
+            tools:layout="@layout/fragment_share">
+        <argument
+                android:name="listId"
+                app:argType="string" />
+
+        <action
+                android:id="@+id/action_share_dest_to_add_friend_dest"
+                app:destination="@id/add_friend_dest"/>
+
+    </fragment>
+    <fragment
+            android:id="@+id/add_friend_dest"
+            android:name="com.example.shopper.AddFriendFragment"
+            android:label="fragment_add_friend"
+            tools:layout="@layout/fragment_add_friend"/>
+    <fragment android:id="@+id/history_detail_dest" android:name="com.example.shopper.HistoryDetailFragment"
+              android:label="fragment_history_detail" tools:layout="@layout/fragment_history_detail">
         <argument android:name="listId" app:argType="string"/>
     </fragment>
+    <fragment android:id="@+id/notifications_dest" android:name="com.example.shopper.NotificationsFragment"
+              android:label="Notifications" tools:layout="@layout/fragment_notifications"/>
+
 </navigation>

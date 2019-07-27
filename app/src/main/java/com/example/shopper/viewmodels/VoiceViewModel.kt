@@ -1,25 +1,27 @@
 package com.example.shopper.viewmodels
 
-import android.content.Context
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import java.util.*
 
-class VoiceViewModel(context: Context) : ViewModel() {
+class VoiceViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val speechRecognizer: SpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+    private val speechRecognizer: SpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(application)
 
     private val intent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
 
     val recognizedLiveData = MutableLiveData<String>()
 
     val errorLiveData = MutableLiveData<String>()
+
+    var actualSpeech = false
 
     init {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -47,6 +49,7 @@ class VoiceViewModel(context: Context) : ViewModel() {
 
             override fun onBeginningOfSpeech() {
                 Log.i("ShopperFragment", "OnBeginningOfSpeech")
+                actualSpeech = true
             }
 
             override fun onEndOfSpeech() {
