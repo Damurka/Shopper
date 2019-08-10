@@ -1,13 +1,16 @@
 package com.example.shopper.adapters
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.amulyakhare.textdrawable.TextDrawable
 import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.shopper.R
 
 @BindingAdapter("imageFromText")
 fun imageFromText(imageView: ImageView, text: String) {
@@ -29,6 +32,15 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
             .load(imageUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(view)
+    }
+}
+
+@BindingAdapter("imageFromDrawable")
+fun bindImageFromDrawable(view: ImageView, shared: Boolean?) {
+    if (shared != null) {
+        val resource = if (shared) R.drawable.ic_visibility else R.drawable.ic_visibility_off
+        val drawable= ContextCompat.getDrawable(view.context, resource)
+       view.setImageDrawable(drawable)
     }
 }
 

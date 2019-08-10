@@ -7,6 +7,7 @@ import com.example.shopper.data.FirebaseQueryData
 import com.example.shopper.helpers.Constants
 import com.example.shopper.helpers.ShoppingListDeserializer
 import com.example.shopper.helpers.ShoppingListItemDeserializer
+import com.example.shopper.models.ShoppingItem
 import com.example.shopper.models.ShoppingList
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,6 +30,20 @@ class ShoppingListViewModel(private val userId: String) : ViewModel() {
     fun addShoppingList(shoppingList: ShoppingList) {
         val key = shoppingDatabaseReference.push().key as String
         shoppingDatabaseReference.child(key).setValue(shoppingList)
+    }
+
+    fun addShoppingList(shoppingList: ShoppingList, shoppingItems: List<ShoppingItem>) {
+        val childUpdates = HashMap<String, Any?>()
+        val key = shoppingDatabaseReference.push().key as String
+        childUpdates["/${Constants.FirebaseShoppingLists}/$userId/$key"] = shoppingList.toMap()
+
+        val ref = database.child(Constants.FirebaseShoppingItems).child(key)
+        for (shoppingItem in shoppingItems) {
+            val itemKey = ref.push().key
+            childUpdates["/${Constants.FirebaseShoppingItems}/$key/$itemKey"] = shoppingItem.toMap()
+        }
+
+        database.updateChildren(childUpdates)
     }
 
     fun deleteShoppingList(shoppingList: ShoppingList) {

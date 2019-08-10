@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/home_dest">
+            app:startDestination="@id/splash_dest">
 
     <fragment
             android:id="@+id/home_dest"
@@ -36,5 +36,10 @@
     <fragment android:id="@+id/register_dest"
               android:name="com.example.shopper.RegisterFragment"
               android:label="@string/register"/>
+    <fragment android:id="@+id/splash_dest" android:name="com.example.shopper.SplashFragment"
+              android:label="fragment_splash" tools:layout="@layout/fragment_splash">
+        <action android:id="@+id/action_splash_dest_to_home_dest" app:destination="@id/home_dest"/>
+        <action android:id="@+id/action_splash_dest_to_login_dest" app:destination="@id/login_dest"/>
+    </fragment>
 
 </navigation>

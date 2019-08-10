@@ -3,6 +3,7 @@ package com.example.shopper
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -43,6 +44,7 @@ class ShoppingDetailsFragment : Fragment() {
 
     private lateinit var callback: SwipeToDeleteCallback
     private lateinit var binding: FragmentShoppingDetailsBinding
+    private lateinit var myMenu: Menu
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -127,6 +129,7 @@ class ShoppingDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_shopper_details, menu)
+        myMenu = menu
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -139,6 +142,7 @@ class ShoppingDetailsFragment : Fragment() {
             R.id.action_shop -> {
                 callback.isOwner = !callback.isOwner
                 toggleShopping()
+                setIcon()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -170,6 +174,12 @@ class ShoppingDetailsFragment : Fragment() {
         with(binding){
             isShopping = !callback.isOwner
         }
+    }
+
+    private fun setIcon() {
+        val icon = if (!callback.isOwner) R.drawable.ic_cancel else R.drawable.ic_shopping_cart
+
+        (myMenu.findItem(R.id.action_shop)).icon = ContextCompat.getDrawable(requireContext(), icon) as Drawable
     }
 
     companion object {

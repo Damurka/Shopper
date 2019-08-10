@@ -13,4 +13,14 @@ data class ShoppingItem(
 
     @Exclude
     var key: String? = null
+
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "name" to name,
+            "owner" to owner,
+            "bought" to bought,
+            "boughtBy" to boughtBy
+        )
+    }
 }

@@ -49,8 +49,8 @@
                 android:layout_height="36dp"
                 android:onClick="@{clickListener}"
                 app:isGone="@{!viewModel.isCreator}"
-                app:srcCompat="@drawable/ic_visibility_off"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:imageFromDrawable='@{viewModel.shared}'
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:srcCompat="@tools:sample/avatars"/>

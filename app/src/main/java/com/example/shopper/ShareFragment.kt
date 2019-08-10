@@ -1,6 +1,7 @@
 package com.example.shopper
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +29,9 @@ class ShareFragment : Fragment() {
         ShoppingListViewModelFactory(authViewModel.userId)
     }
     private val friendsViewModel: ShareViewModel by viewModels {
-        ShareViewModelFactory(authViewModel.userId)
+        ShareViewModelFactory(authViewModel.userId, args.listId)
     }
 
-    private val sharedWithViewModel: SharedWithViewModel by viewModels {
-        SharedWithViewModelFactory(args.listId)
-    }
 
     private var shoppingLists= listOf<ShoppingList>()
     private var shoppingList: ShoppingList? = null
@@ -75,20 +73,22 @@ class ShareFragment : Fragment() {
             shoppingLists = it
         })
 
-        friendsViewModel.friendsLiveData.observe(viewLifecycleOwner, Observer {
+        friendsViewModel.result.observe(viewLifecycleOwner, Observer {
             if (isOwner) {
+                Log.i("uyvuyvuv", "ShareFragment " + it.toString())
                 adapter.submitList(it)
             }
         })
 
-        sharedWithViewModel.sharedWithLiveData.observe(viewLifecycleOwner, Observer {
+        friendsViewModel.sharedWithLiveData.observe(viewLifecycleOwner, Observer {
             if (!isOwner) {
                 adapter.submitList(it)
             }
         })
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_share_dest_to_add_friend_dest)
+            val directions = ShareFragmentDirections.actionShareDestToAddFriendDest(args.listId)
+            findNavController().navigate(directions)
         }
 
         return binding.root

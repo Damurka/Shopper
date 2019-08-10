@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph_home"
-            app:startDestination="@id/category_dest">
+            app:startDestination="@id/shopping_dest">
 
     <fragment
             android:id="@+id/shopping_dest"
@@ -23,7 +23,9 @@
             android:id="@+id/category_dest"
             android:name="com.example.shopper.CategoryFragment"
             android:label="fragment_category"
-            tools:layout="@layout/fragment_category"/>
+            tools:layout="@layout/fragment_category">
+        <action android:id="@+id/action_category_dest_to_recipe_dest" app:destination="@id/recipe_dest"/>
+    </fragment>
     <fragment
             android:id="@+id/shopping_details_dest"
             android:name="com.example.shopper.ShoppingDetailsFragment"
@@ -56,12 +58,21 @@
             android:id="@+id/add_friend_dest"
             android:name="com.example.shopper.AddFriendFragment"
             android:label="fragment_add_friend"
-            tools:layout="@layout/fragment_add_friend"/>
+            tools:layout="@layout/fragment_add_friend">
+        <argument
+                android:name="listId"
+                app:argType="string" />
+    </fragment>
+
     <fragment android:id="@+id/history_detail_dest" android:name="com.example.shopper.HistoryDetailFragment"
               android:label="fragment_history_detail" tools:layout="@layout/fragment_history_detail">
         <argument android:name="listId" app:argType="string"/>
     </fragment>
     <fragment android:id="@+id/notifications_dest" android:name="com.example.shopper.NotificationsFragment"
               android:label="Notifications" tools:layout="@layout/fragment_notifications"/>
+    <fragment android:id="@+id/recipe_dest" android:name="com.example.shopper.RecipeFragment"
+              android:label="fragment_recipe" tools:layout="@layout/fragment_recipe">
+        <argument android:name="recipe" app:argType="com.example.shopper.models.Recipe"/>
+    </fragment>
 
 </navigation>

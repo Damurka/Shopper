@@ -4,9 +4,11 @@ import android.app.NotificationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.shopper.helpers.NotificationHelper
+import java.util.*
 
 class ShopperActivity : AppCompatActivity() {
 

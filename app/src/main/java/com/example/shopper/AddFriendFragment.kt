@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.shopper.adapters.ProfileListAdapter
 import com.example.shopper.databinding.FragmentAddFriendBinding
@@ -24,10 +25,11 @@ import com.example.shopper.viewmodels.ProfileListViewModel
 
 class AddFriendFragment : Fragment() {
 
+    private val args: AddFriendFragmentArgs by navArgs()
     private val authViewModel: AuthViewModel by activityViewModels()
     private val profileListViewModel: ProfileListViewModel by activityViewModels()
     private val friendsViewModel: ShareViewModel by viewModels {
-        ShareViewModelFactory(authViewModel.userId)
+        ShareViewModelFactory(authViewModel.userId, args.listId)
     }
 
     private var friends = listOf<Friend>()
