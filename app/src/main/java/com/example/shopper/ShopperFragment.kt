@@ -24,8 +24,7 @@ import com.example.shopper.databinding.FragmentShopperBinding
 import com.example.shopper.helpers.OnSwipe
 import com.example.shopper.helpers.SwipeToDeleteAndArchiveCallback
 import com.example.shopper.helpers.capitalizeWords
-import com.example.shopper.models.Message
-import com.example.shopper.models.ShoppingList
+import com.example.shopper.models.*
 import com.example.shopper.viewmodels.*
 
 
@@ -34,6 +33,7 @@ class ShopperFragment : Fragment() {
     private var hasRecordPermission = false
 
     private val authViewModel: AuthViewModel by activityViewModels()
+    //private val cloudViewModel: CloudViewModel by activityViewModels()
     private val shoppingViewModel: ShoppingListViewModel by viewModels {
         ShoppingListViewModelFactory(authViewModel.userId)
     }
@@ -41,7 +41,7 @@ class ShopperFragment : Fragment() {
         VoiceViewModelFactory(requireActivity().application)
     }
     private val notificationViewModel: NotificationViewModel by viewModels {
-        NotificationViewModelFactory(requireContext(), authViewModel.userId)
+        NotificationViewModelFactory(authViewModel.userId)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -73,7 +73,8 @@ class ShopperFragment : Fragment() {
                 } else {
                     adapter.notifyItemChanged(position)
                     Toast.makeText(requireContext(), "Your archive request sent to the owner of the list", Toast.LENGTH_LONG).show()
-                    notificationViewModel.addMessage(item.userId, Message("Archiving Request", "${authViewModel.email} is requesting that ${item.name} Shopping List be archived"))
+                    val message = Message("Archiving Request", "${authViewModel.email} is requesting that ${item.name} Shopping List be archived")
+                    notificationViewModel.addMessage(message, item.userId)
                 }
             }
 

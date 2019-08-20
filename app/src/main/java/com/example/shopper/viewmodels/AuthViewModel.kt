@@ -1,14 +1,20 @@
 package com.example.shopper.viewmodels
 
 import android.app.Activity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.shopper.data.FirebaseQueryData
 import com.example.shopper.helpers.Constants
+import com.example.shopper.helpers.ProfileDeserializer
 import com.example.shopper.models.Profile
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class AuthViewModel : ViewModel() {
@@ -26,6 +32,7 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val instanceId: FirebaseInstanceId = FirebaseInstanceId.getInstance()
 
     val authenticationState = MutableLiveData<AuthenticationState>()
 
@@ -46,6 +53,23 @@ class AuthViewModel : ViewModel() {
             refuseAuthentication()
         }
 
+    }
+
+    private fun generateInstanceId() {
+        instanceId.instanceId
+            .addOnCompleteListener(OnCompleteListener {
+                if (!it.isSuccessful) {
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = it.result?.token
+
+                database.child("profiles")
+                    .child(userId)
+                    .child("instanceId")
+                    .setValue(token)
+            })
     }
 
     fun authenticate(activity: Activity, email: String, password: String) {
@@ -85,6 +109,7 @@ class AuthViewModel : ViewModel() {
 
     private fun acceptAuthentication() {
         authenticationState.value = AuthenticationState.AUTHENTICATED
+        generateInstanceId()
     }
 
     fun refuseAuthentication() {

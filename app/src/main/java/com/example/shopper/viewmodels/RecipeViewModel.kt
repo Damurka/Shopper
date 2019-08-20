@@ -15,9 +15,11 @@ import retrofit2.Response
 
 class RecipeViewModel : ViewModel() {
 
+    private val URL = "https://api.edamam.com"
+
     private var recipes = MutableLiveData<List<RecipeCover>>()
 
-    private val recipeService = ServiceBuilder.buildService(RecipeService::class.java)
+    private val recipeService = ServiceBuilder.buildService(URL, RecipeService::class.java)
 
     val recipeLiveData: LiveData<List<RecipeCover>> = recipes
 

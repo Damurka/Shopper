@@ -36,12 +36,10 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
 }
 
 @BindingAdapter("imageFromDrawable")
-fun bindImageFromDrawable(view: ImageView, shared: Boolean?) {
-    if (shared != null) {
-        val resource = if (shared) R.drawable.ic_visibility else R.drawable.ic_visibility_off
-        val drawable= ContextCompat.getDrawable(view.context, resource)
-       view.setImageDrawable(drawable)
-    }
+fun bindImageFromDrawable(view: ImageView, shared: Boolean) {
+    val resource = if (shared) R.drawable.ic_visibility else R.drawable.ic_visibility_off
+    val drawable= ContextCompat.getDrawable(view.context, resource)
+    view.setImageDrawable(drawable)
 }
 
 @BindingAdapter("isGone")

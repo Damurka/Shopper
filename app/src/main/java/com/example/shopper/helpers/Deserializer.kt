@@ -1,9 +1,9 @@
 package com.example.shopper.helpers
 
-import android.util.Log
 import androidx.arch.core.util.Function
 import com.example.shopper.models.*
 import com.google.firebase.database.DataSnapshot
+
 
 class ProfileListDeserializer : Function<DataSnapshot, List<Profile>> {
 
@@ -11,15 +11,12 @@ class ProfileListDeserializer : Function<DataSnapshot, List<Profile>> {
         val profiles = mutableListOf<Profile>()
 
         for (data in input!!.children) {
-            //Log.i("Deserializer", data.)
-            Log.i("Deserializer", data.value.toString())
             if (data.value is String) {
                 break
             }
 
             val profile = data.getValue(Profile::class.java) as Profile
             profile.key = data.key
-            Log.i("Deserializer", profile.name)
             profiles.add(profile)
         }
 
@@ -41,14 +38,12 @@ class FriendsDeserializer : Function<DataSnapshot, List<Friend>> {
         val friends = mutableListOf<Friend>()
 
         for (data in input!!.children) {
-            Log.i("Deserializer", data.value.toString())
             if (data.value is String) {
                 break
             }
 
             val friend = data.getValue(Friend::class.java) as Friend
             friend.key = data.key
-            Log.i("Deserializer", "Friend Name: " + friend.name + " " + friend.email)
             friends.add(friend)
         }
 
@@ -69,7 +64,6 @@ class MessageDeserializer : Function<DataSnapshot, List<Message>> {
 
             val message = data.getValue(Message::class.java) as Message
             message.key = data.key
-
             messages.add(message)
         }
 
@@ -84,14 +78,12 @@ class ShoppingListDeserializer : Function<DataSnapshot, List<ShoppingList>> {
         val shopping = mutableListOf<ShoppingList>()
 
         for (data in input!!.children) {
-            Log.i("Deserializer", data.value.toString())
             if (data.value is String) {
                 break
             }
 
             val shop = data.getValue(ShoppingList::class.java) as ShoppingList
             shop.key = data.key
-            Log.i("Deserializer", shop.name)
             shopping.add(shop)
         }
 
@@ -116,15 +108,12 @@ class ShoppingDetailDeserializer : Function<DataSnapshot, List<ShoppingItem>> {
         val shopping = mutableListOf<ShoppingItem>()
 
         for (data in input!!.children) {
-            //Log.i("Deserializer", data.)
-            Log.i("Deserializer", data.value.toString())
             if (data.value is String) {
                 break
             }
 
             val shop = data.getValue(ShoppingItem::class.java) as ShoppingItem
             shop.key = data.key
-            Log.i("Deserializer", shop.name)
             shopping.add(shop)
         }
 

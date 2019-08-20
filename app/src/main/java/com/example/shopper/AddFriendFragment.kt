@@ -1,7 +1,6 @@
 package com.example.shopper
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.shopper.adapters.ProfileListAdapter
 import com.example.shopper.databinding.FragmentAddFriendBinding
 import com.example.shopper.models.Friend
-import com.example.shopper.viewmodels.AuthViewModel
-import com.example.shopper.viewmodels.ShareViewModel
-import com.example.shopper.viewmodels.ShareViewModelFactory
-import com.example.shopper.viewmodels.ProfileListViewModel
+import com.example.shopper.models.Message
+import com.example.shopper.viewmodels.*
 
 
 class AddFriendFragment : Fragment() {
@@ -30,6 +27,9 @@ class AddFriendFragment : Fragment() {
     private val profileListViewModel: ProfileListViewModel by activityViewModels()
     private val friendsViewModel: ShareViewModel by viewModels {
         ShareViewModelFactory(authViewModel.userId, args.listId)
+    }
+    private val notificationViewModel: NotificationViewModel by viewModels {
+        NotificationViewModelFactory(authViewModel.userId)
     }
 
     private var friends = listOf<Friend>()
@@ -43,11 +43,10 @@ class AddFriendFragment : Fragment() {
         activity.supportActionBar?.title = "Add Friend"
 
         adapter = ProfileListAdapter { profile ->
-            Log.i("AddFriendFragment", "Profile: " + profile.key)
             val isFriend = friends.find {
                 it.key == profile.key
             }
-            Log.i("AddFriendFragment", "Friend: " + isFriend?.key)
+
             when {
                 profile.key == authViewModel.userId -> Toast.makeText(requireContext(), "You cannot add yourself", Toast.LENGTH_LONG).show()
                 isFriend != null -> Toast.makeText(requireContext(), "Already your friends", Toast.LENGTH_LONG).show()
@@ -55,6 +54,8 @@ class AddFriendFragment : Fragment() {
                     val friend = Friend(profile.email, profile.name)
                     friendsViewModel.addFriend(profile.key!!, friend)
                     findNavController().navigateUp()
+                    val message = Message("Added as friend", "${authViewModel.email} has added you as a friend")
+                    notificationViewModel.addMessage(message, profile.key!!)
                 }
             }
         }

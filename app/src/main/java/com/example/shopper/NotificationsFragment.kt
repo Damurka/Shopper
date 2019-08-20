@@ -21,7 +21,7 @@ class NotificationsFragment : Fragment() {
 
     private val authViewModel: AuthViewModel by activityViewModels()
     private val notificationViewModel: NotificationViewModel by viewModels {
-        NotificationViewModelFactory(requireContext(), authViewModel.userId)
+        NotificationViewModelFactory(authViewModel.userId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

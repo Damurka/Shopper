@@ -1,7 +1,6 @@
 package com.example.shopper
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.shopper.adapters.ShareAdapter
 import com.example.shopper.databinding.FragmentShareBinding
 import com.example.shopper.helpers.SwipeToDeleteCallback
+import com.example.shopper.models.Message
 import com.example.shopper.models.ShoppingList
 import com.example.shopper.viewmodels.*
 
@@ -27,6 +27,9 @@ class ShareFragment : Fragment() {
     private val args: ShareFragmentArgs by navArgs()
     private val shoppingListViewModel: ShoppingListViewModel by viewModels {
         ShoppingListViewModelFactory(authViewModel.userId)
+    }
+    private val notificationViewModel: NotificationViewModel by viewModels {
+        NotificationViewModelFactory(authViewModel.userId)
     }
     private val friendsViewModel: ShareViewModel by viewModels {
         ShareViewModelFactory(authViewModel.userId, args.listId)
@@ -46,14 +49,18 @@ class ShareFragment : Fragment() {
 
         val adapter = ShareAdapter{
             friendsViewModel.shareWith(it, shoppingList!!)
+            val message = Message("Shared Shopping List", "${authViewModel.email} has shared ${shoppingList?.name} shopping list")
+            notificationViewModel.addMessage(message, it.key!!)
         }
 
         binding.shareList.adapter = adapter
         binding.shareList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-        val callback = SwipeToDeleteCallback {
-                val item = adapter.getFriend(it)
-                friendsViewModel.removeFriend(item, shoppingLists)
+        val callback = SwipeToDeleteCallback { position ->
+            val item = adapter.getFriend(position)
+            friendsViewModel.removeFriend(item, shoppingLists)
+            val message = Message("You have been Unfriended", "You will no longer access ${authViewModel.email} shopping list")
+            notificationViewModel.addMessage(message, item.key!!)
         }
 
         val touchHelper = ItemTouchHelper(callback)
@@ -75,7 +82,6 @@ class ShareFragment : Fragment() {
 
         friendsViewModel.result.observe(viewLifecycleOwner, Observer {
             if (isOwner) {
-                Log.i("uyvuyvuv", "ShareFragment " + it.toString())
                 adapter.submitList(it)
             }
         })

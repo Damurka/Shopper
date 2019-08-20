@@ -31,3 +31,5 @@
 }
 
 -keep class androidx.core.app.CoreComponentFactory { *; }
+
+-keepnames class com.example.shopper.models.Recipe
