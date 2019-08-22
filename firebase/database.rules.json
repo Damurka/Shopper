@@ -1,0 +1,53 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "profiles": {
+      ".read": "auth != null",
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "notifications": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null"
+      }
+    },
+    "shopping-shared-with": {
+      "$listId": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "shopping-lists": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && (auth.uid === $uid || root.child('shopping-friends').child(auth.uid).hasChild($uid))",
+        "users-shopping": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "shopping-archives": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && (auth.uid === $uid || root.child('shopping-friends').child(auth.uid).hasChild($uid))"
+      }
+    },
+    "shopping-items": {
+      "$listId": {
+        ".read": "auth != null && (root.child('shopping-lists').child(auth.uid).hasChild($listId) || root.child('shopping-archives').child(auth.uid).hasChild($listId))",
+        ".write": "auth != null"
+      }
+    },
+    "shopping-friends": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    }
+  }
+}

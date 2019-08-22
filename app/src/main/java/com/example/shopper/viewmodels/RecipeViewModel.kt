@@ -15,7 +15,7 @@ import retrofit2.Response
 
 class RecipeViewModel : ViewModel() {
 
-    private val URL = "https://api.edamam.com"
+    private val URL = "https://api.c"
 
     private var recipes = MutableLiveData<List<RecipeCover>>()
 
