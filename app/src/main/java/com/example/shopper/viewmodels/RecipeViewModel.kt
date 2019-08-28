@@ -15,19 +15,31 @@ import retrofit2.Response
 
 class RecipeViewModel : ViewModel() {
 
-    private val URL = "https://api.c"
-
+    /**
+     * Recipes as MutableLiveDate
+     */
     private var recipes = MutableLiveData<List<RecipeCover>>()
 
+    /**
+     * Service for http call to the Edamam API
+     */
     private val recipeService = ServiceBuilder.buildService(URL, RecipeService::class.java)
 
+    /**
+     * Recipes as LiveDate
+     */
     val recipeLiveData: LiveData<List<RecipeCover>> = recipes
 
+    /**
+     * Gets the recipes from then EDAMAAM API
+     */
     fun getRecipes(query: String) {
+        // TODO: Get the API KEY from https://developer.edamam.com
+        // current key have limitation since they are free
         recipeService.searchRecipe(query, "e6f5f143", "3782c50113ad97726f12a0f702e800a3")
             .enqueue(object: Callback<RecipeResponse> {
                 override fun onFailure(call: Call<RecipeResponse>, t: Throwable) {
-                    Log.e("CategoryFragment", t.message)
+
                 }
 
                 override fun onResponse(call: Call<RecipeResponse>, response: Response<RecipeResponse>) {
@@ -37,6 +49,10 @@ class RecipeViewModel : ViewModel() {
                 }
 
             })
+    }
+
+    companion object {
+        private const val URL = "https://api.edamam.com"
     }
 
 }

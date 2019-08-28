@@ -3,6 +3,10 @@ package com.example.shopper.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+
+/**
+ * Generates a ShoppingDetailsViewModel
+ */
 class ShoppingDetailsViewModelFactory (private val listId: String) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

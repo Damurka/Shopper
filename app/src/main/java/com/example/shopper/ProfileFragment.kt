@@ -25,6 +25,9 @@ import com.example.shopper.viewmodels.ProfileViewModelFactory
 import java.io.ByteArrayOutputStream
 
 
+/**
+ * Handles the profile view
+ */
 class ProfileFragment : AuthenticatedFragment() {
 
     private var hasStoragePermission = false
@@ -32,17 +35,22 @@ class ProfileFragment : AuthenticatedFragment() {
     private lateinit var profile: Profile
     private lateinit var binding: FragmentProfileBinding
 
+    /**
+     * ViewModels holds data on the profile
+     */
     private val profileViewModel: ProfileViewModel by viewModels {
-        ProfileViewModelFactory(authViewModel.userId!!)
+        ProfileViewModelFactory(authViewModel.userId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
 
+        //Initialize the toolbar
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(binding.toolbar)
         activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        // When save button pressed update the photo and profile
         binding.saveButton.setOnClickListener {
             profile.name = binding.name.text.toString()
             profile.phone = binding.phone.text.toString()
@@ -51,6 +59,8 @@ class ProfileFragment : AuthenticatedFragment() {
             photo = null
         }
 
+        // WHen the photo is clicked check for storage permission and if
+        // has storage permission show the PhotoDialog
         binding.photo.setOnClickListener {
             if (hasStoragePermission) {
                 showDialog(PhotoFragment())
@@ -61,6 +71,7 @@ class ProfileFragment : AuthenticatedFragment() {
 
         checkPermissions()
 
+        // Retrieve the current user profile and update the fields
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer {
             profile = it
             binding.name.setText(it.name)
@@ -76,6 +87,9 @@ class ProfileFragment : AuthenticatedFragment() {
         return binding.root
     }
 
+    /**
+     * Handles the permission result granted or denied
+     */
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             REQUEST_CODE -> {
@@ -105,6 +119,9 @@ class ProfileFragment : AuthenticatedFragment() {
         }
     }
 
+    /**
+     * Process the photo to be uploaded
+     */
     private fun processPhoto(resultCode: Int) {
         val intent: Intent
         val code: Int

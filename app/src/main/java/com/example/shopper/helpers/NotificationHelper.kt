@@ -10,6 +10,9 @@ import com.example.shopper.R
 
 object NotificationHelper {
 
+    /**
+     * Initialize the notification channels
+     */
     fun createNotificationChannel(context: Context, importance: Int, showBadge: Boolean, description: String) {
         // Safety checked the OS version for API 26 and greater.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -23,10 +26,13 @@ object NotificationHelper {
 
             // Created the channel using the NotificationManager.
             val notificationManager = context.getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
+            notificationManager?.createNotificationChannel(channel)
         }
     }
 
+    /**
+     * Create the notification
+     */
     fun createNotification(context: Context, title: String, content: String, autoCancel: Boolean) {
         val channelId = "${context.packageName}-${context.getString(R.string.app_name)}"
 

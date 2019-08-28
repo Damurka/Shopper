@@ -11,8 +11,17 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.shopper.databinding.FragmentHomeBinding
 
 
+/**
+ * HomeFragment
+ *
+ * The parent fragment to all views in the bottom navigation bar
+ * ie ShoppingLisr, History, Notification and Search
+ */
 class HomeFragment : AuthenticatedFragment() {
 
+    /**
+     * NavController for the nav_graph_home
+     */
     private lateinit var childNavController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,6 +44,7 @@ class HomeFragment : AuthenticatedFragment() {
             binding.toolbar.title = destination.label
         }
 
+        // Handle back presses for the childNavController
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             childNavController.navigateUp() || navController.navigateUp()
         }

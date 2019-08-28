@@ -12,15 +12,20 @@ import com.example.shopper.models.Profile
 
 class RegisterFragment : UnauthenticatedFragment() {
 
+    /**
+     * Register Fragment binding view
+     */
     private lateinit var binding: FragmentRegisterBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
+        // If login button clicked move to the Login fragment
         binding.login.setOnClickListener {
             navController.popBackStack(R.id.login_dest, false)
         }
 
+        // When register button clicked create an account
         binding.registerButton.setOnClickListener {
             showProgressBar()
 
@@ -39,6 +44,7 @@ class RegisterFragment : UnauthenticatedFragment() {
             }
         }
 
+        // When back button pressed cancel registration
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.userCancelledRegistration()
             navController.popBackStack(R.id.login_dest, false)

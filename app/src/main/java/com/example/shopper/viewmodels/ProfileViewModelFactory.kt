@@ -3,6 +3,9 @@ package com.example.shopper.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+/**
+ * Generates the ProfileViewModel
+ */
 class ProfileViewModelFactory(private val userId: String): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

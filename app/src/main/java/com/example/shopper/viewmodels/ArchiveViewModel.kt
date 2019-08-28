@@ -11,18 +11,36 @@ import com.example.shopper.models.ShoppingList
 import com.google.firebase.database.FirebaseDatabase
 
 
+/**
+ * Holds the data on the archived shopping list
+ */
 class ArchiveViewModel(private val userId: String) : ViewModel() {
 
+    /**
+     * Firebase Database reference
+     */
     private val database = FirebaseDatabase.getInstance().reference
 
+    /**
+     * Archive database reference
+     */
     private var archiveDatabaseReference = database.child(Constants.FirebaseArchive).child(userId)
 
+    /**
+     * Archived list Transformed to observable LiveData
+     */
     val archivesLiveData: LiveData<List<ShoppingList>> = Transformations.map(FirebaseQueryData(archiveDatabaseReference), ShoppingListDeserializer())
 
+    /**
+     * Gets a single Archived List as LiveData
+     */
     fun getArchiveItem(key: String): LiveData<ShoppingList> {
         return Transformations.map(FirebaseQueryData(archiveDatabaseReference.child(key)), ShoppingListItemDeserializer())
     }
 
+    /**
+     * Deletes a single Archived  List
+     */
     fun deleteShoppingList(shoppingList: ShoppingList, email: String) {
         val childUpdates = HashMap<String, Any?>()
         childUpdates["/${Constants.FirebaseArchive}/$userId/${shoppingList.key}"] = null

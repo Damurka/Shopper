@@ -20,28 +20,62 @@ import com.example.shopper.models.Message
 import com.example.shopper.viewmodels.*
 
 
+/**
+ * AddFriendFragment
+ *
+ * Handles users view that shows all users of the app
+ */
 class AddFriendFragment : Fragment() {
 
+    /**
+     * Argument sent from the Shopper fragment listId
+     * for Identifying the list for which to show the details
+     */
     private val args: AddFriendFragmentArgs by navArgs()
+
+    /**
+     * ViewModel that hold information about the authentication status
+     * of the current user
+     */
     private val authViewModel: AuthViewModel by activityViewModels()
+
+    /**
+     * ViewModel holds information of all users of this app
+     */
     private val profileListViewModel: ProfileListViewModel by activityViewModels()
+
+    /**
+     * ViewModel holds information of friends of the current user
+     */
     private val friendsViewModel: ShareViewModel by viewModels {
         ShareViewModelFactory(authViewModel.userId, args.listId)
     }
+
+    /**
+     * ViewModel used to send the notifications
+     */
     private val notificationViewModel: NotificationViewModel by viewModels {
         NotificationViewModelFactory(authViewModel.userId)
     }
 
+    /**
+     * Holds information about the friends of the current user
+     */
     private var friends = listOf<Friend>()
 
+    /**
+     * Adapter for all the users
+     */
     private lateinit var adapter: ProfileListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentAddFriendBinding.inflate(inflater, container, false)
 
+        // Initialize the toolbar
         val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.title = "Add Friend"
 
+        // Initialize the adapter along with the click listener
         adapter = ProfileListAdapter { profile ->
             val isFriend = friends.find {
                 it.key == profile.key
@@ -59,16 +93,15 @@ class AddFriendFragment : Fragment() {
                 }
             }
         }
-
         binding.profileList.adapter = adapter
         binding.profileList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
+        // Retrieves and Listens for changes in the current users
         profileListViewModel.profileListLiveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                adapter.submitList(it)
-            }
+            adapter.submitList(it)
         })
 
+        // Retrieves and Listens for changes in the current user's friends
         friendsViewModel.friendsLiveData.observe(viewLifecycleOwner, Observer {
             friends = it
         })

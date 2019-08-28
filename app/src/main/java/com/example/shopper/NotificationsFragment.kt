@@ -17,9 +17,19 @@ import com.example.shopper.viewmodels.NotificationViewModel
 import com.example.shopper.viewmodels.NotificationViewModelFactory
 
 
+/**
+ * Handles the notification view
+ */
 class NotificationsFragment : Fragment() {
 
+    /**
+     * ViewModel that hold information about the authentication status
+     */
     private val authViewModel: AuthViewModel by activityViewModels()
+
+    /**
+     * ViewModel that hold information about the notifications
+     */
     private val notificationViewModel: NotificationViewModel by viewModels {
         NotificationViewModelFactory(authViewModel.userId)
     }
@@ -27,14 +37,17 @@ class NotificationsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
+        // Initialize the toolbar and set the title
         val activity = requireActivity() as AppCompatActivity
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         activity.supportActionBar?.title = "Notifications"
 
+        // Initialize the adapter and attach to the recyclerview
         val adapter = NotificationsAdapter()
         binding.notificationsList.adapter = adapter
         binding.notificationsList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
+        // Retrieve and update the recyclerview with the notifications
         notificationViewModel.notificationLiveData.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })

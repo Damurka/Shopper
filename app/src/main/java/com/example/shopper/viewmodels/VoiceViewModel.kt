@@ -13,14 +13,23 @@ import java.util.*
 
 class VoiceViewModel(application: Application) : AndroidViewModel(application) {
 
+    /**
+     * Speech Recognizer instance
+     */
     private val speechRecognizer: SpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(application)
 
+    /**
+     * Speech recognizer intent
+     */
     private val intent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
 
     val recognizedLiveData = MutableLiveData<String>()
 
     val errorLiveData = MutableLiveData<String>()
 
+    /**
+     * if speech has been initialted
+     */
     var actualSpeech = false
 
     init {
@@ -73,11 +82,16 @@ class VoiceViewModel(application: Application) : AndroidViewModel(application) {
         })
     }
 
+    /**
+     * Start Speech reconition
+     */
     fun startRecognition() {
         speechRecognizer.startListening(intent)
-
     }
 
+    /**
+     * Stop speech reconition
+     */
     fun stopRecognition() {
         speechRecognizer.stopListening()
     }

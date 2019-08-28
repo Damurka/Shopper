@@ -7,10 +7,24 @@ import com.example.shopper.data.FirebaseQueryData
 import com.example.shopper.helpers.Constants
 import com.example.shopper.helpers.ProfileListDeserializer
 import com.example.shopper.models.Profile
+import com.google.firebase.database.FirebaseDatabase
 
 
 class ProfileListViewModel : ViewModel() {
 
-    val profileListLiveData: LiveData<List<Profile>> = Transformations.map(FirebaseQueryData(Constants.profileDatabaseReference), ProfileListDeserializer())
+    /**
+     * Firebase database reference
+     */
+    private val database = FirebaseDatabase.getInstance().reference
+
+    /**
+     * Firebase datbase Profile reference
+     */
+    val profileDatabaseReference = database.child(Constants.FirebaseProfiles)
+
+    /**
+     * Retrieves the users list as LiveData
+     */
+    val profileListLiveData: LiveData<List<Profile>> = Transformations.map(FirebaseQueryData(profileDatabaseReference), ProfileListDeserializer())
 
 }

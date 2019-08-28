@@ -12,6 +12,4 @@ object Constants {
     const val FirebaseNotifications = "notifications"
 
     val database = FirebaseDatabase.getInstance().reference
-
-    val profileDatabaseReference = database.child(FirebaseProfiles)
 }

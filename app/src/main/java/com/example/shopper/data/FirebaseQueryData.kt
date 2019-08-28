@@ -4,6 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.database.*
 
+
+/**
+ * Converts the firebase query result to LiveData
+ * Unlike a regular observable, LiveData respects the 
+ * lifecycle of app components, such that the Observer can specify 
+ * a Lifecycle in which it should observe. LiveData considers an Observer 
+ * to be in an active state if the Observer’s Lifecycle is in STARTED or RESUMED 
+ * state.
+ */
 class FirebaseQueryData(private val query: Query) : LiveData<DataSnapshot>() {
 
     private val listener = MyValueEventListener()

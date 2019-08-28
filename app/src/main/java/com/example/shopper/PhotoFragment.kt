@@ -7,6 +7,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
+/**
+ * Handle dialog on the profile when the photo is clicked
+ */
 class PhotoFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

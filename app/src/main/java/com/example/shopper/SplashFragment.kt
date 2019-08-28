@@ -13,6 +13,12 @@ import com.example.shopper.databinding.FragmentSplashBinding
 import com.example.shopper.viewmodels.AuthViewModel
 
 
+/**
+ * SplashFragment
+ *
+ * The first fragment to be called used to check if the user is logged in
+ * and redirects to the right screen login or the home fragment
+ */
 class SplashFragment : Fragment() {
 
     private val authViewModel: AuthViewModel by activityViewModels()

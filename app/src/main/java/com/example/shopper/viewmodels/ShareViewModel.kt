@@ -18,14 +18,29 @@ import kotlin.collections.set
 
 class ShareViewModel(private val userId: String, listId: String) : ViewModel() {
 
+    /**
+     * Firebase Database reference
+     */
     private val database = FirebaseDatabase.getInstance().reference
 
+    /**
+     * Firebase Database friends reference
+     */
     private val friendsDatabaseReference = database.child(Constants.FirebaseFriends).child(userId)
 
+    /**
+     * Firebase Database shared-with reference
+     */
     private val sharedWithDatabaseReference = database.child(Constants.FirebaseSharedWith).child(listId)
 
+    /**
+     * Retrieves a list of freinds as LiveData
+     */
     val friendsLiveData: LiveData<List<Friend>> = Transformations.map(FirebaseQueryData(friendsDatabaseReference), FriendsDeserializer())
 
+    /**
+     * Retrieves a list of freinds shared a shopping list as LiveData
+     */
     val sharedWithLiveData: LiveData<List<Friend>> = Transformations.map(FirebaseQueryData(sharedWithDatabaseReference), FriendsDeserializer())
 
     val result = MediatorLiveData<List<Friend>>()
@@ -43,10 +58,16 @@ class ShareViewModel(private val userId: String, listId: String) : ViewModel() {
         }
     }
 
+    /**
+     * Adds a user to be your friend
+     */
     fun addFriend(key: String, friend: Friend) {
         friendsDatabaseReference.child(key).setValue(friend)
     }
 
+    /**
+     * Removes a user from being your friend Unfriend
+     */
     fun removeFriend(friend: Friend, shoppingLists: List<ShoppingList>) {
         val childUpdates = HashMap<String, Any?>()
         childUpdates["/${Constants.FirebaseFriends}/$userId/${friend.key}"] = null
@@ -58,6 +79,9 @@ class ShareViewModel(private val userId: String, listId: String) : ViewModel() {
         database.updateChildren(childUpdates)
     }
 
+    /**
+     * Share or Unshare a list with a friend
+     */
     fun shareWith(friend: Friend, shoppingList: ShoppingList) {
         val childUpdates = HashMap<String, Any?>()
 

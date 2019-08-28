@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
+/**
+ * Used to generate the NotificationViewModel
+ */
 class NotificationViewModelFactory (private val userId: String) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
